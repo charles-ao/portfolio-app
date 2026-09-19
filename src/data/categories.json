@@ -1,0 +1,8 @@
+{
+  "categories": [
+    { "id": "streaming", "name": "Streaming" },
+    { "id": "batch-etl", "name": "Batch ETL" },
+    { "id": "analytics-engineering", "name": "Analytics Engineering" },
+    { "id": "data-platform", "name": "Data Platform" }
+  ]
+}

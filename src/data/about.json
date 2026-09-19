@@ -1,0 +1,128 @@
+{
+  "name": "Amara Okafor",
+  "title": "Analytics Engineer",
+  "location": "Manchester, UK",
+  "currentCompany": "Northgate Retail Group",
+  "heroTagline": "I design and run the pipelines and warehouse models that make a company's numbers trustworthy — from Kafka streams to the dbt layer analysts query every morning.",
+  "heroSummary": "Six years across streaming, batch ETL and analytics engineering. Currently owning the modelling layer at Northgate Retail Group.",
+  "bio": [
+    "I work at the join between engineering and analytics: ingesting messy operational data, modelling it into something a business can agree on, and keeping the whole thing observable at 6am when a load fails.",
+    "I started in BI, which is why I care less about clever pipelines than about numbers people trust. Most of my work now sits on Snowflake and dbt, with Kafka and Spark where latency matters. I write documentation, tests and contracts as part of the build, not after it."
+  ],
+  "resumeUrl": "/resume.pdf",
+  "atAGlance": [
+    { "label": "Experience", "value": "6 years" },
+    { "label": "Focus", "value": "Streaming · dbt · Platform" },
+    { "label": "Warehouse", "value": "Snowflake, BigQuery" },
+    { "label": "Remote", "value": "UK + EU timezones" },
+    { "label": "Projects", "value": "4 case studies" }
+  ],
+  "dailyTools": [
+    { "name": "Python", "iconSlug": "python" },
+    { "name": "Snowflake", "iconSlug": "snowflake" },
+    { "name": "Airflow", "iconSlug": "apacheairflow" },
+    { "name": "Kafka", "iconSlug": "apachekafka" },
+    { "name": "Spark", "iconSlug": "apachespark" },
+    { "name": "Google Cloud", "iconSlug": "googlecloud" },
+    { "name": "Docker", "iconSlug": "docker" },
+    { "name": "Terraform", "iconSlug": "terraform" },
+    { "name": "Looker", "iconSlug": "looker" },
+    { "name": "dbt", "iconSlug": null },
+    { "name": "Tableau", "iconSlug": null }
+  ],
+  "timeline": [
+    {
+      "company": "Northgate Retail Group",
+      "role": "Analytics Engineer",
+      "location": "Manchester",
+      "startDate": "2023",
+      "endDate": "Present",
+      "description": "Own the dbt layer behind finance and merchandising reporting: 240+ models, contract-tested sources, and a rebuilt margin mart that cut month-end close from four days to one."
+    },
+    {
+      "company": "Halden Logistics",
+      "role": "Data Engineer",
+      "location": "Leeds",
+      "startDate": "2021",
+      "endDate": "2023",
+      "description": "Built the streaming side of the platform — Kafka ingestion and Spark Structured Streaming into Snowflake — serving telemetry for a 1,800-vehicle fleet to ops dashboards in under a minute."
+    },
+    {
+      "company": "Vellum Health",
+      "role": "BI Analyst",
+      "location": "Remote",
+      "startDate": "2019",
+      "endDate": "2021",
+      "description": "Reporting for a clinical operations team of 60. Learned SQL properly, and learned what happens when two dashboards disagree about the same number."
+    }
+  ],
+  "skills": [
+    {
+      "category": "Languages",
+      "items": [
+        { "name": "Python", "iconSlug": "python" },
+        { "name": "SQL", "iconSlug": "postgresql" },
+        { "name": "PySpark", "iconSlug": "apachespark" },
+        { "name": "Bash", "iconSlug": null }
+      ]
+    },
+    {
+      "category": "Data Warehousing",
+      "items": [
+        { "name": "Snowflake", "iconSlug": "snowflake" },
+        { "name": "BigQuery", "iconSlug": "googlecloud" },
+        { "name": "Postgres", "iconSlug": "postgresql" },
+        { "name": "DuckDB", "iconSlug": "duckdb" }
+      ]
+    },
+    {
+      "category": "Orchestration & Modelling",
+      "items": [
+        { "name": "Airflow", "iconSlug": "apacheairflow" },
+        { "name": "dbt", "iconSlug": null },
+        { "name": "Dagster", "iconSlug": null },
+        { "name": "Kafka", "iconSlug": "apachekafka" }
+      ]
+    },
+    {
+      "category": "Cloud & Infrastructure",
+      "items": [
+        { "name": "GCP", "iconSlug": "googlecloud" },
+        { "name": "AWS", "iconSlug": null },
+        { "name": "Terraform", "iconSlug": "terraform" },
+        { "name": "Docker", "iconSlug": "docker" },
+        { "name": "Kubernetes", "iconSlug": "kubernetes" }
+      ]
+    },
+    {
+      "category": "Visualization",
+      "items": [
+        { "name": "Looker", "iconSlug": "looker" },
+        { "name": "Tableau", "iconSlug": null },
+        { "name": "Power BI", "iconSlug": null }
+      ]
+    },
+    {
+      "category": "Practices",
+      "items": [
+        { "name": "Data contracts", "iconSlug": null },
+        { "name": "CI/CD", "iconSlug": null },
+        { "name": "Git", "iconSlug": "git" }
+      ]
+    }
+  ],
+  "certifications": [
+    { "name": "SnowPro Advanced: Data Engineer", "issuer": "Snowflake", "year": "2025", "iconSlug": "snowflake" },
+    { "name": "Analytics Engineering Certification", "issuer": "dbt Labs", "year": "2024", "iconSlug": null },
+    { "name": "SnowPro Core Certification", "issuer": "Snowflake", "year": "2024", "iconSlug": "snowflake" },
+    { "name": "Astronomer Certification for Apache Airflow", "issuer": "Astronomer", "year": "2024", "iconSlug": "apacheairflow" },
+    { "name": "Certified Data Engineer Associate", "issuer": "Databricks", "year": "2023", "iconSlug": "databricks" },
+    { "name": "Professional Data Engineer", "issuer": "Google Cloud", "year": "2023", "iconSlug": "googlecloud" },
+    { "name": "Solutions Architect — Associate", "issuer": "Amazon Web Services", "year": "2022", "iconSlug": null },
+    { "name": "Terraform Associate", "issuer": "HashiCorp", "year": "2022", "iconSlug": "terraform" }
+  ],
+  "education": [
+    { "degree": "MSc Data Science", "institution": "University of Manchester", "year": "2019" },
+    { "degree": "BSc Mathematics", "institution": "University of Leeds", "year": "2017" }
+  ]
+}

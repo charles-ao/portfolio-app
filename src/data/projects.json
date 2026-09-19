@@ -1,0 +1,297 @@
+{
+  "projects": [
+    {
+      "id": "realtime-fleet-telemetry",
+      "title": "Realtime Fleet Telemetry Pipeline",
+      "summary": "Sub-minute vehicle telemetry for an 1,800-van fleet, from Kafka topics through Spark into Snowflake and ops dashboards.",
+      "category": "streaming",
+      "tags": ["Streaming", "IoT", "Schema Contracts", "Cost Optimisation"],
+      "thumbnailIcon": "apachekafka",
+      "heroSummary": "Replacing a nightly batch load with a streaming pipeline that puts vehicle telemetry in front of the operations team in under a minute.",
+      "techStack": [
+        { "name": "Kafka", "iconSlug": "apachekafka" },
+        { "name": "Spark Streaming", "iconSlug": "apachespark" },
+        { "name": "Snowflake", "iconSlug": "snowflake" },
+        { "name": "Python", "iconSlug": "python" },
+        { "name": "Terraform", "iconSlug": "terraform" },
+        { "name": "Docker", "iconSlug": "docker" },
+        { "name": "dbt", "iconSlug": null },
+        { "name": "AWS MSK", "iconSlug": null }
+      ],
+      "problemStatement": [
+        "Telemetry from 1,800 vans — GPS, fuel, engine fault codes — landed in the warehouse once a night. Depot managers were making dispatch decisions on data that was up to 26 hours old, and a fault code raised at 9am was invisible until the next morning.",
+        "The nightly job also failed loudly and often: a single malformed device payload aborted the whole load, and there was no way to reprocess a subset without rerunning eleven hours of history."
+      ],
+      "architecture": {
+        "imageUrl": null,
+        "caption": "FIG. 02 — END-TO-END DATA FLOW, DEVICE TO DASHBOARD"
+      },
+      "dataSources": [
+        { "source": "Vehicle telematics units", "format": "Protobuf over MQTT" },
+        { "source": "Dispatch & routing system", "format": "Postgres CDC" },
+        { "source": "Fuel card provider", "format": "REST API, hourly" }
+      ],
+      "pipeline": [
+        { "stage": "01", "title": "Ingestion", "description": "Devices publish to MQTT; a bridge writes to partitioned Kafka topics with per-device keys and a 7-day retention window." },
+        { "stage": "02", "title": "Transformation", "description": "Spark Structured Streaming decodes protobuf, validates against the schema registry, and routes bad payloads to a quarantine topic." },
+        { "stage": "03", "title": "Storage", "description": "Micro-batches land in Snowflake raw tables every 20 seconds; dbt incremental models build the vehicle-hour fact layer." },
+        { "stage": "04", "title": "Serving", "description": "Depot dashboards read from a materialised serving view; fault codes also fire a webhook into the maintenance queue." }
+      ],
+      "dataModel": {
+        "summary": "The serving layer is a narrow star schema: one fact per grain, dimensions conformed with the finance models so depot cost and vehicle utilisation join without a bridge table.",
+        "tables": [
+          { "name": "fct_vehicle_reading", "type": "Fact · Incremental", "grain": "One device reading", "description": "Validated telemetry at source resolution, clustered on vehicle and reading timestamp. 42M rows a day, 30-day hot window." },
+          { "name": "fct_vehicle_hour", "type": "Fact · Incremental", "grain": "Vehicle × hour", "description": "Distance, idling minutes, fuel burn and fault counts rolled to the hour. This is the table dashboards actually query." },
+          { "name": "dim_vehicle", "type": "Dimension · SCD2", "grain": "Vehicle × validity", "description": "Registration, depot assignment, model and telematics firmware version, history preserved so old readings keep their context." },
+          { "name": "dim_depot", "type": "Dimension · Conformed", "grain": "One depot", "description": "Region, shift pattern and cost centre, shared with the finance mart so utilisation and spend reconcile." }
+        ],
+        "footnote": "24 MODELS · 61 TESTS · SOURCES CONTRACT-TESTED ON FRESHNESS AND ROW COUNT"
+      },
+      "infrastructure": [
+        { "label": "Provisioning", "description": "Terraform modules for MSK, the Spark cluster and Snowflake roles and warehouses. One plan per environment, applied only through CI — no console changes." },
+        { "label": "Runtime", "description": "The MQTT bridge and streaming jobs run as Docker images on ECS Fargate; managed Airflow triggers the dbt runs and the hourly fuel-card pull." },
+        { "label": "Environments", "description": "dev → staging → prod, each with its own Snowflake database and topic prefix. Staging replays a 1% sample of live traffic, so schema changes fail there first." },
+        { "label": "Observability", "description": "Grafana on consumer lag and job duration, dbt artifacts pushed to a freshness board, and an on-call page when the quarantine topic grows faster than it drains." }
+      ],
+      "challenges": [
+        { "challenge": "Devices went offline in rural areas and replayed hours of buffered events at once, producing duplicate and out-of-order records.", "solution": "Event-time watermarking with a 6-hour tolerance plus a dedupe key on device ID and reading timestamp, enforced in the Spark job and again as a dbt test." },
+        { "challenge": "Streaming into Snowflake naively meant a warehouse running 24/7 and a credit bill three times the batch pipeline it replaced.", "solution": "Micro-batch buffering at 20-second intervals on a small warehouse with auto-suspend, and hot aggregates kept narrow so dashboards never scan raw events." },
+        { "challenge": "Firmware updates changed payload fields without warning, silently breaking downstream fuel metrics.", "solution": "A schema registry with compatibility checks in CI, and a contract test that pages the on-call engineer before the data reaches the fact layer." }
+      ],
+      "results": [
+        { "value": "26h → 48s", "label": "End-to-end data latency, device to dashboard" },
+        { "value": "99.95%", "label": "Pipeline uptime over 12 months in production" },
+        { "value": "£310k", "label": "Annual fuel saving from idling alerts in year one" },
+        { "value": "−38%", "label": "Warehouse spend against the batch pipeline it replaced" }
+      ],
+      "screenshots": [
+        { "url": null, "caption": "FIG. 03 — DEPOT LIVE VIEW" },
+        { "url": null, "caption": "FIG. 04 — FUEL & IDLING REPORT" }
+      ],
+      "writeUp": {
+        "readTime": "8 min read",
+        "lead": "A longer account of the project — why streaming was the right call here, and where it wasn't.",
+        "body": [
+          "The business case was never really about latency. Depot managers had learned to distrust the morning report, so they phoned drivers instead — the pipeline's job was to make a screen more reliable than a phone call. That framing changed what we built: fewer metrics, defined precisely, with freshness printed next to every number.",
+          "Most of the engineering effort went into the unglamorous half: the quarantine topic, the replay tooling, and the contract tests that stop a firmware release from quietly changing what \"fuel level\" means."
+        ],
+        "retro": {
+          "title": "What I would do differently",
+          "text": "I would put the hourly aggregate in front of users on day one and hold the raw fact layer back until someone asked for it. We spent six weeks tuning a table that three people ever queried directly."
+        },
+        "externalUrl": null
+      },
+      "links": { "github": "#", "demo": "#", "caseStudy": null }
+    },
+    {
+      "id": "retail-margin-warehouse-rebuild",
+      "title": "Retail Margin Warehouse Rebuild",
+      "summary": "240 tested dbt models replacing a 900-line stored procedure. Month-end close went from four days to one.",
+      "category": "analytics-engineering",
+      "tags": ["Analytics Engineering", "Data Contracts", "Finance"],
+      "thumbnailIcon": "snowflake",
+      "heroSummary": "Rebuilding a decade-old stored-procedure warehouse as a tested, documented dbt project the finance team could trust.",
+      "techStack": [
+        { "name": "dbt", "iconSlug": null },
+        { "name": "Snowflake", "iconSlug": "snowflake" },
+        { "name": "Airflow", "iconSlug": "apacheairflow" },
+        { "name": "SQL", "iconSlug": "postgresql" },
+        { "name": "Python", "iconSlug": "python" }
+      ],
+      "problemStatement": [
+        "The margin mart was a single 900-line stored procedure, written over a decade by rotating contractors, that nobody fully understood. It ran once a night, took four days to fully reconcile after any change, and finance kept a shadow spreadsheet because they didn't trust it.",
+        "There were no tests, no documentation and no way to tell which upstream table change had broken a downstream number until someone in finance noticed the total looked wrong."
+      ],
+      "architecture": {
+        "imageUrl": null,
+        "caption": "FIG. 02 — SOURCE SYSTEMS TO MARGIN MART"
+      },
+      "dataSources": [
+        { "source": "POS transactions", "format": "Snowflake, batch landed hourly" },
+        { "source": "Supplier cost feeds", "format": "CSV over SFTP, daily" },
+        { "source": "Merchandising hierarchy", "format": "Postgres CDC" }
+      ],
+      "pipeline": [
+        { "stage": "01", "title": "Ingestion", "description": "Fivetran connectors land POS, supplier cost and hierarchy data into a raw Snowflake schema, unchanged from source." },
+        { "stage": "02", "title": "Transformation", "description": "dbt staging models standardise types and naming; intermediate models encode the margin logic previously buried in the stored procedure." },
+        { "stage": "03", "title": "Storage", "description": "Mart-layer models are incremental, clustered on store and date, with snapshot models preserving historical cost changes." },
+        { "stage": "04", "title": "Serving", "description": "Looker explores read directly from the mart layer; finance's close checklist runs a dbt test suite before sign-off." }
+      ],
+      "dataModel": {
+        "summary": "A conformed star schema replaces the procedural logic: one fact at the store-SKU-day grain, with margin components broken into their own columns instead of a single opaque total.",
+        "tables": [
+          { "name": "fct_margin_daily", "type": "Fact · Incremental", "grain": "Store × SKU × day", "description": "Revenue, cost, markdown and margin components at daily grain, replacing the stored procedure's single output table." },
+          { "name": "dim_product", "type": "Dimension · SCD2", "grain": "SKU × validity", "description": "Product hierarchy and supplier cost history, versioned so historical margin recalculates correctly after a hierarchy change." }
+        ],
+        "footnote": "240 MODELS · 640 TESTS · FULL LINEAGE DOCUMENTED IN DBT DOCS"
+      },
+      "infrastructure": [
+        { "label": "Provisioning", "description": "Snowflake roles and warehouses managed as Terraform, one warehouse per workload so finance queries never queue behind the nightly build." },
+        { "label": "Runtime", "description": "dbt Cloud runs the nightly build and a lighter intraday refresh; Airflow triggers the Fivetran syncs it depends on." },
+        { "label": "Environments", "description": "A dedicated CI database rebuilds the full project on every pull request against a sampled dataset." },
+        { "label": "Observability", "description": "dbt test results and freshness checks post to a finance-close Slack channel every morning." }
+      ],
+      "challenges": [
+        { "challenge": "Finance needed the new mart to match the old procedure's numbers exactly before they would sign off on cutting over.", "solution": "A parallel-run period with an automated reconciliation model diffing old vs new output row-by-row, tracked to zero discrepancies before go-live." },
+        { "challenge": "Migrating logic out of a stored procedure risked silently losing edge-case handling nobody remembered was there.", "solution": "Paired sessions with the original finance analyst to extract undocumented business rules before touching the SQL." }
+      ],
+      "results": [
+        { "value": "4d → 1d", "label": "Month-end close time" },
+        { "value": "240", "label": "Tested, documented dbt models" },
+        { "value": "0", "label": "Reconciliation discrepancies at cutover" },
+        { "value": "100%", "label": "Finance sign-off without a shadow spreadsheet" }
+      ],
+      "screenshots": [
+        { "url": null, "caption": "FIG. 03 — MARGIN MART LOOKER EXPLORE" }
+      ],
+      "writeUp": {
+        "readTime": "6 min read",
+        "lead": "Why rewriting a decade-old stored procedure was less about SQL and more about winning back trust.",
+        "body": [
+          "The hardest part wasn't the transformation logic — it was convincing finance that a system they'd learned to route around by hand was worth trusting again. Documentation and tests did more for adoption than any performance improvement."
+        ],
+        "retro": {
+          "title": "What I would do differently",
+          "text": "I'd have started the parallel-run reconciliation in week one instead of week six — it became the thing that actually built confidence, and it should have shaped the whole project timeline."
+        },
+        "externalUrl": null
+      },
+      "links": { "github": "#", "demo": "#", "caseStudy": null }
+    },
+    {
+      "id": "supplier-ingestion-framework",
+      "title": "Supplier Ingestion Framework",
+      "summary": "Config-driven ingestion for 60 supplier feeds across SFTP, CSV and API, with schema-drift alerting built in.",
+      "category": "batch-etl",
+      "tags": ["Batch ETL", "Schema Contracts", "Automation"],
+      "thumbnailIcon": "apacheairflow",
+      "heroSummary": "One configurable framework replacing 60 bespoke, hand-maintained supplier ingestion scripts.",
+      "techStack": [
+        { "name": "Python", "iconSlug": "python" },
+        { "name": "Airflow", "iconSlug": "apacheairflow" },
+        { "name": "AWS S3", "iconSlug": null },
+        { "name": "Docker", "iconSlug": "docker" },
+        { "name": "Postgres", "iconSlug": "postgresql" }
+      ],
+      "problemStatement": [
+        "Each of the 60 supplier feeds — a mix of SFTP drops, CSV exports and a handful of REST APIs — had its own bespoke script, written by whoever onboarded that supplier. Half were undocumented, and a format change from a supplier could break a script for weeks before anyone noticed.",
+        "Onboarding a new supplier took two to three days of engineering time, most of it copy-pasting and adjusting an existing script rather than writing anything new."
+      ],
+      "architecture": {
+        "imageUrl": null,
+        "caption": "FIG. 02 — CONFIG-DRIVEN INGESTION FRAMEWORK"
+      },
+      "dataSources": [
+        { "source": "Supplier SFTP drops", "format": "Fixed-width and CSV, nightly" },
+        { "source": "Supplier REST APIs", "format": "JSON, polled hourly" },
+        { "source": "Manual CSV uploads", "format": "Ad hoc, via a lightweight upload form" }
+      ],
+      "pipeline": [
+        { "stage": "01", "title": "Ingestion", "description": "A per-supplier YAML config declares connection details and expected schema; a single Airflow DAG factory generates one DAG per supplier from it." },
+        { "stage": "02", "title": "Transformation", "description": "Incoming files are validated against the declared schema; drift beyond a configured tolerance quarantines the file and pages the data team." },
+        { "stage": "03", "title": "Storage", "description": "Validated files land in a raw S3 zone, then load into Postgres staging tables, partitioned by supplier and date." },
+        { "stage": "04", "title": "Serving", "description": "Downstream dbt models pick up from the staging tables; a supplier health dashboard shows freshness and error counts per feed." }
+      ],
+      "dataModel": null,
+      "infrastructure": [
+        { "label": "Provisioning", "description": "Each supplier's config is a YAML file in version control; a merged PR is the entire onboarding process." },
+        { "label": "Runtime", "description": "The ingestion workers run as a Docker image on Airflow's KubernetesExecutor, scaling per feed volume." },
+        { "label": "Environments", "description": "A staging Airflow instance replays historical files nightly to catch config regressions before production." },
+        { "label": "Observability", "description": "Per-supplier freshness and row-count checks feed a dashboard, with alerting on missed drops or schema drift." }
+      ],
+      "challenges": [
+        { "challenge": "Suppliers changed file formats without notice, and the old scripts failed silently or produced corrupt loads.", "solution": "Schema validation on every file against a declared contract, with drift routed to a quarantine bucket and a Slack alert instead of a bad load." },
+        { "challenge": "Sixty different bespoke scripts meant sixty different ways for the same class of bug to reappear.", "solution": "Collapsing all suppliers onto one framework and a shared test suite, so a fix or improvement applies to every feed at once." }
+      ],
+      "results": [
+        { "value": "60", "label": "Supplier feeds on one shared framework" },
+        { "value": "3d → 2h", "label": "Time to onboard a new supplier" },
+        { "value": "0", "label": "Silent bad loads since schema validation shipped" },
+        { "value": "−70%", "label": "Ingestion-related incident volume" }
+      ],
+      "screenshots": [
+        { "url": null, "caption": "FIG. 03 — SUPPLIER FEED HEALTH DASHBOARD" }
+      ],
+      "writeUp": {
+        "readTime": "5 min read",
+        "lead": "Turning 60 one-off scripts into a single configurable framework, and what made suppliers' trust in the data go up rather than down.",
+        "body": [
+          "The framework itself was straightforward engineering. The harder problem was organisational: getting each supplier relationship owner to agree on what a valid file actually looked like, often for the first time."
+        ],
+        "retro": {
+          "title": "What I would do differently",
+          "text": "I'd have built the quarantine-and-alert path before the framework itself, rather than after — it would have surfaced how messy some suppliers' data really was much earlier."
+        },
+        "externalUrl": null
+      },
+      "links": { "github": "#", "demo": "#", "caseStudy": null }
+    },
+    {
+      "id": "self-serve-metrics-platform",
+      "title": "Self-Serve Metrics Platform",
+      "summary": "A metrics layer and Looker environment provisioned by Terraform, with query-cost caps and usage tracking.",
+      "category": "data-platform",
+      "tags": ["Data Platform", "Cost Optimisation", "Self-Serve"],
+      "thumbnailIcon": "terraform",
+      "heroSummary": "Giving every team a governed, self-serve way to define and query metrics without a data-team ticket queue.",
+      "techStack": [
+        { "name": "Terraform", "iconSlug": "terraform" },
+        { "name": "GCP", "iconSlug": "googlecloud" },
+        { "name": "Looker", "iconSlug": "looker" },
+        { "name": "Docker", "iconSlug": "docker" },
+        { "name": "Kubernetes", "iconSlug": "kubernetes" }
+      ],
+      "problemStatement": [
+        "Every team wanted their own metric defined slightly differently, and every request went through the same two-person data team. The backlog was three weeks deep, and two teams had started keeping their own spreadsheet definitions that quietly disagreed with each other.",
+        "There was also no visibility into who was running what query, so a handful of unoptimised dashboards were responsible for most of the warehouse spend."
+      ],
+      "architecture": {
+        "imageUrl": null,
+        "caption": "FIG. 02 — METRICS LAYER AND SELF-SERVE ENVIRONMENT"
+      },
+      "dataSources": [
+        { "source": "Existing BigQuery marts", "format": "Already modelled, read-only" },
+        { "source": "Team-submitted metric definitions", "format": "YAML, via pull request" }
+      ],
+      "pipeline": [
+        { "stage": "01", "title": "Ingestion", "description": "Teams define metrics as YAML against existing BigQuery marts — no new pipelines, just a shared definition layer on top." },
+        { "stage": "02", "title": "Transformation", "description": "A metrics compiler validates definitions against a style guide and compiles them into LookML, checked in CI before merge." },
+        { "stage": "03", "title": "Storage", "description": "Compiled LookML deploys to a dedicated Looker project per domain, each with its own BigQuery reservation and cost cap." },
+        { "stage": "04", "title": "Serving", "description": "Teams explore their own metrics in Looker directly; a usage dashboard tracks query cost per team against their monthly budget." }
+      ],
+      "dataModel": null,
+      "infrastructure": [
+        { "label": "Provisioning", "description": "Terraform provisions a Looker project, BigQuery reservation and IAM group per onboarded team, from a single module." },
+        { "label": "Runtime", "description": "The metrics compiler runs as a scheduled Kubernetes job on merge to main, redeploying changed LookML projects only." },
+        { "label": "Environments", "description": "A sandbox Looker instance lets teams preview compiled metrics against a cost-capped BigQuery slot before requesting production access." },
+        { "label": "Observability", "description": "Per-team query cost and slot usage feed a shared dashboard, with a soft-cap warning before a team's monthly budget is spent." }
+      ],
+      "challenges": [
+        { "challenge": "Letting every team define their own metrics risked recreating the same inconsistency problem, just self-served instead of centralised.", "solution": "A required style guide and CI validation step that checks new metric definitions against existing ones for naming and logic conflicts before merge." },
+        { "challenge": "Self-serve access to BigQuery risked runaway query costs from inexperienced analysts.", "solution": "Per-team BigQuery reservations with hard slot caps, so an expensive query slows down rather than spiking the shared bill." }
+      ],
+      "results": [
+        { "value": "3wk → 2d", "label": "Time from metric request to availability" },
+        { "value": "12", "label": "Teams onboarded to self-serve metrics" },
+        { "value": "−45%", "label": "Warehouse spend from capped reservations" },
+        { "value": "0", "label": "Conflicting metric definitions since the style-guide check shipped" }
+      ],
+      "screenshots": [
+        { "url": null, "caption": "FIG. 03 — TEAM USAGE AND COST DASHBOARD" }
+      ],
+      "writeUp": {
+        "readTime": "6 min read",
+        "lead": "Building a self-serve metrics platform that stayed governed instead of turning into twelve teams' worth of new spreadsheet disagreements.",
+        "body": [
+          "The Terraform and Looker plumbing was the easy 20%. Most of the actual work was the style guide and the CI check that enforces it — the part that keeps self-serve from just relocating the original inconsistency problem."
+        ],
+        "retro": {
+          "title": "What I would do differently",
+          "text": "I'd have capped BigQuery reservations from day one instead of week four. The first month's bill was a rough surprise that a smaller default cap would have prevented entirely."
+        },
+        "externalUrl": null
+      },
+      "links": { "github": "#", "demo": "#", "caseStudy": null }
+    }
+  ]
+}

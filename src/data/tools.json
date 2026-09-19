@@ -1,0 +1,19 @@
+{
+  "tools": [
+    { "id": "kafka", "name": "Kafka", "iconSlug": "apachekafka" },
+    { "id": "spark-streaming", "name": "Spark Streaming", "iconSlug": "apachespark" },
+    { "id": "snowflake", "name": "Snowflake", "iconSlug": "snowflake" },
+    { "id": "python", "name": "Python", "iconSlug": "python" },
+    { "id": "terraform", "name": "Terraform", "iconSlug": "terraform" },
+    { "id": "docker", "name": "Docker", "iconSlug": "docker" },
+    { "id": "dbt", "name": "dbt", "iconSlug": null },
+    { "id": "aws-msk", "name": "AWS MSK", "iconSlug": null },
+    { "id": "airflow", "name": "Airflow", "iconSlug": "apacheairflow" },
+    { "id": "sql", "name": "SQL", "iconSlug": "postgresql" },
+    { "id": "aws-s3", "name": "AWS S3", "iconSlug": null },
+    { "id": "postgres", "name": "Postgres", "iconSlug": "postgresql" },
+    { "id": "gcp", "name": "GCP", "iconSlug": "googlecloud" },
+    { "id": "looker", "name": "Looker", "iconSlug": "looker" },
+    { "id": "kubernetes", "name": "Kubernetes", "iconSlug": "kubernetes" }
+  ]
+}
