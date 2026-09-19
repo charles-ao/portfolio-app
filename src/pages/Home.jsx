@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import about from '../data/about.json'
 import contact from '../data/contact.json'
+import CornerFrame from '../components/CornerFrame'
 import './Home.css'
 
 function ToolIcon({ name, iconSlug }) {
@@ -50,11 +51,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="home__glance">
-          <span className="home__glance-corner home__glance-corner--tl" />
-          <span className="home__glance-corner home__glance-corner--tr" />
-          <span className="home__glance-corner home__glance-corner--bl" />
-          <span className="home__glance-corner home__glance-corner--br" />
+        <CornerFrame className="home__glance">
           <span className="eyebrow">At a glance</span>
           <div className="home__glance-list">
             {about.atAGlance.map((row) => (
@@ -64,7 +61,7 @@ export default function Home() {
               </div>
             ))}
           </div>
-        </div>
+        </CornerFrame>
       </div>
 
       <div className="home__tools">

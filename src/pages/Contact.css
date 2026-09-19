@@ -1,0 +1,158 @@
+.contact {
+  padding: 64px 40px;
+}
+
+.contact__grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 40px;
+  margin-top: 22px;
+  align-items: start;
+}
+
+.contact__intro {
+  grid-column: span 5;
+}
+
+.contact__heading {
+  font-size: 44px;
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+  margin: 0 0 16px;
+}
+
+.contact__lead {
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--fg2);
+  margin: 0 0 22px;
+  max-width: 46ch;
+}
+
+.contact__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  border: 1px solid var(--accent);
+  padding: 7px 12px;
+  margin-bottom: 32px;
+}
+
+.contact__status-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--accent);
+}
+
+.contact__status-text {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--accent-ink);
+}
+
+.contact__links {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--line);
+}
+
+.contact__link-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 4px;
+  text-decoration: none;
+  color: inherit;
+  border-bottom: 1px solid var(--line);
+}
+
+.contact__link-row:hover {
+  background: var(--row-hover);
+}
+
+.contact__link-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.contact__link-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: var(--fg2);
+}
+
+.contact__link-value {
+  font-size: 15px;
+  font-weight: 500;
+  margin-top: 3px;
+}
+
+.contact__map-box {
+  grid-column: span 7;
+  border: 1px solid var(--line);
+  padding: 18px 18px 14px;
+  background: var(--map-bg);
+}
+
+.contact__map-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: var(--fg2);
+}
+
+.contact__map-box .world-map {
+  margin-top: 10px;
+}
+
+.contact__map-footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 12px;
+  margin-top: 6px;
+  border-top: 1px solid var(--line);
+}
+
+.contact__map-city {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.contact__map-meta {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--fg2);
+}
+
+@media (max-width: 860px) {
+  .contact {
+    padding: 40px 20px;
+  }
+
+  .contact__grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .contact__intro,
+  .contact__map-box {
+    grid-column: span 1;
+  }
+
+  .contact__heading {
+    font-size: 32px;
+  }
+
+  .contact__lead {
+    font-size: 15px;
+  }
+}

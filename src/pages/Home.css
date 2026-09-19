@@ -67,39 +67,9 @@
 
 .home__glance {
   grid-column: span 5;
-  position: relative;
   border: 1px solid var(--line);
   padding: 26px 24px;
   background: var(--bg2-soft);
-}
-
-.home__glance-corner {
-  position: absolute;
-  width: 9px;
-  height: 9px;
-  background:
-    linear-gradient(var(--mark), var(--mark)) center / 1px 100% no-repeat,
-    linear-gradient(var(--mark), var(--mark)) center / 100% 1px no-repeat;
-}
-
-.home__glance-corner--tl {
-  top: -5px;
-  left: -5px;
-}
-
-.home__glance-corner--tr {
-  top: -5px;
-  right: -5px;
-}
-
-.home__glance-corner--bl {
-  bottom: -5px;
-  left: -5px;
-}
-
-.home__glance-corner--br {
-  bottom: -5px;
-  right: -5px;
 }
 
 .home__glance-list {

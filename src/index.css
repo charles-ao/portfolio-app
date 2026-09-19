@@ -160,3 +160,36 @@ button {
 .btn--secondary:active {
   transform: translateY(1px);
 }
+
+.corner-frame {
+  position: relative;
+}
+
+.corner-frame__corner {
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  background:
+    linear-gradient(var(--mark), var(--mark)) center / 1px 100% no-repeat,
+    linear-gradient(var(--mark), var(--mark)) center / 100% 1px no-repeat;
+}
+
+.corner-frame__corner--tl {
+  top: -5px;
+  left: -5px;
+}
+
+.corner-frame__corner--tr {
+  top: -5px;
+  right: -5px;
+}
+
+.corner-frame__corner--bl {
+  bottom: -5px;
+  left: -5px;
+}
+
+.corner-frame__corner--br {
+  bottom: -5px;
+  right: -5px;
+}
