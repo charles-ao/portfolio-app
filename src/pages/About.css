@@ -1,0 +1,248 @@
+.about {
+  padding: 64px 40px;
+}
+
+.about__intro {
+  margin-top: 22px;
+}
+
+.about__name {
+  font-size: 46px;
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+  margin: 0 0 12px;
+}
+
+.about__role {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  color: var(--accent-ink);
+  margin: 0 0 22px;
+}
+
+.about__bio-group p {
+  font-size: 16px;
+  line-height: 1.65;
+  max-width: 60ch;
+  margin: 0 0 14px;
+}
+
+.about__bio-group p:first-child {
+  color: var(--fg);
+}
+
+.about__bio-group p:last-child {
+  color: var(--fg2);
+  margin-bottom: 26px;
+}
+
+.about-section {
+  margin-top: 64px;
+}
+
+/* ---- Career timeline ---- */
+
+.about-timeline {
+  display: flex;
+  flex-direction: column;
+}
+
+.about-timeline__row {
+  display: grid;
+  grid-template-columns: 150px 24px 1fr;
+  gap: 32px;
+  padding-bottom: 34px;
+}
+
+.about-timeline__row:last-child {
+  padding-bottom: 0;
+}
+
+.about-timeline__date {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  color: var(--fg2);
+  padding-top: 3px;
+}
+
+.about-timeline__marker {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.about-timeline__dot {
+  position: absolute;
+  top: 6px;
+  width: 9px;
+  height: 9px;
+  background: var(--accent);
+}
+
+.about-timeline__line {
+  position: absolute;
+  top: 6px;
+  bottom: -34px;
+  width: 1px;
+  background: var(--line);
+}
+
+.about-timeline__role {
+  font-size: 19px;
+  margin: 0 0 3px;
+}
+
+.about-timeline__meta {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--accent-ink);
+  margin: 0 0 10px;
+}
+
+.about-timeline__description {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--fg2);
+  margin: 0;
+  max-width: 66ch;
+}
+
+/* ---- Skills ---- */
+
+.about-skills {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 32px;
+}
+
+.about-skills__label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: var(--fg2);
+}
+
+.about-skills__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+/* ---- Certifications ---- */
+
+.about-certs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 32px;
+}
+
+.about-cert {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.about-cert__icon {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  flex: none;
+  border: 1px solid var(--line);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--accent-ink);
+  text-transform: uppercase;
+}
+
+.about-cert__body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.about-cert__name {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.about-cert__issuer {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: var(--fg2);
+  margin-top: 2px;
+}
+
+.about-cert__year {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--fg2);
+}
+
+/* ---- Education ---- */
+
+.about-education-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 32px;
+}
+
+.about-education__row {
+  padding: 13px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.about-education__line {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.about-education__degree {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.about-education__year {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--fg2);
+}
+
+.about-education__institution {
+  font-size: 13px;
+  color: var(--fg2);
+}
+
+@media (max-width: 860px) {
+  .about {
+    padding: 40px 20px;
+  }
+
+  .about__name {
+    font-size: 32px;
+  }
+
+  .about-section {
+    margin-top: 40px;
+  }
+
+  .about-timeline__row {
+    grid-template-columns: 70px 16px 1fr;
+    gap: 16px;
+    padding-bottom: 26px;
+  }
+
+  .about-skills,
+  .about-certs,
+  .about-education-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -2,19 +2,14 @@ import { Link } from 'react-router-dom'
 import about from '../data/about.json'
 import contact from '../data/contact.json'
 import CornerFrame from '../components/CornerFrame'
+import { simpleIconUrl } from '../utils/icons'
 import './Home.css'
 
 function ToolIcon({ name, iconSlug }) {
   if (!iconSlug) {
     return <span className="home-tools__text-chip">{name}</span>
   }
-  return (
-    <img
-      className="home-tools__icon"
-      src={`https://cdn.simpleicons.org/${iconSlug}/697565`}
-      alt={name}
-    />
-  )
+  return <img className="home-tools__icon" src={simpleIconUrl(iconSlug)} alt={name} />
 }
 
 export default function Home() {

@@ -193,3 +193,30 @@ button {
   bottom: -5px;
   right: -5px;
 }
+
+.section-heading {
+  font-size: 28px;
+  letter-spacing: -0.02em;
+  margin: 0 0 24px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--line);
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border: 1px solid var(--line);
+  padding: 6px 10px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.chip--mono {
+  font-family: var(--font-mono);
+}
+
+.chip__icon {
+  height: 15px;
+  filter: var(--icon-filter);
+}
