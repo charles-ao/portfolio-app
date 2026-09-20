@@ -220,3 +220,23 @@ button {
   height: 15px;
   filter: var(--icon-filter);
 }
+
+.chip--lg {
+  padding: 9px 13px;
+  font-size: 14px;
+}
+
+.chip--lg .chip__icon {
+  height: 17px;
+}
+
+.tag-pill {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  padding: 5px 9px;
+  border: 1px solid var(--line);
+  color: var(--fg2);
+}

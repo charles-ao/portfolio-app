@@ -1,0 +1,490 @@
+.detail {
+  padding: 52px 40px;
+}
+
+.detail-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--fg2);
+}
+
+.detail-back:hover {
+  color: var(--accent-ink);
+}
+
+/* ---- Header ---- */
+
+.detail-header__category {
+  display: inline-flex;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  padding: 5px 9px;
+  background: var(--accent);
+  color: var(--accent-text);
+  margin-top: 26px;
+}
+
+.detail-header__title {
+  font-size: 50px;
+  line-height: 1.04;
+  letter-spacing: -0.03em;
+  margin: 14px 0 14px;
+  max-width: 24ch;
+}
+
+.detail-header__lead {
+  font-size: 19px;
+  line-height: 1.55;
+  color: var(--fg2);
+  margin: 0;
+  max-width: 64ch;
+}
+
+.detail-header__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 34px;
+}
+
+/* ---- Section shell ---- */
+
+.detail-section {
+  margin-top: 52px;
+  padding-top: 26px;
+  border-top: 1px solid var(--line);
+}
+
+.detail-section__grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 32px;
+}
+
+.detail-section__label {
+  grid-column: span 3;
+}
+
+.detail-section__content {
+  grid-column: span 9;
+}
+
+.detail-section__number {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: var(--fg2);
+}
+
+.detail-section__title {
+  font-size: 26px;
+  letter-spacing: -0.02em;
+  margin: 6px 0 0;
+}
+
+.detail-section__caption {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--fg2);
+  margin-top: 10px;
+}
+
+.detail-section__title-full {
+  font-size: 26px;
+  letter-spacing: -0.02em;
+  margin: 6px 0 24px;
+}
+
+/* ---- Prose ---- */
+
+.detail-prose p {
+  font-size: 16px;
+  line-height: 1.65;
+  margin: 0 0 12px;
+  max-width: 70ch;
+}
+
+.detail-prose p:first-child {
+  color: var(--fg);
+}
+
+.detail-prose p:not(:first-child) {
+  color: var(--fg2);
+}
+
+.detail-prose p:last-child {
+  margin-bottom: 0;
+}
+
+.detail-prose--secondary p:first-child {
+  color: var(--fg2);
+}
+
+.detail-prose-lead {
+  font-size: 17px;
+  line-height: 1.6;
+  margin: 0 0 20px;
+  max-width: 70ch;
+}
+
+/* ---- Architecture figure ---- */
+
+.detail-figure {
+  border: 1px solid var(--line);
+  padding: 8px;
+}
+
+.detail-image {
+  width: 100%;
+  display: block;
+  background: var(--bg2);
+  object-fit: cover;
+}
+
+.detail-image--placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: var(--fg2);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+}
+
+/* ---- Tech stack ---- */
+
+.detail-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* ---- Data sources table ---- */
+
+.detail-table {
+  border: 1px solid var(--line);
+}
+
+.detail-table__row {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  border-bottom: 1px solid var(--line);
+}
+
+.detail-table__row:last-child {
+  border-bottom: none;
+}
+
+.detail-table__row > span {
+  padding: 13px 14px;
+  font-size: 14px;
+}
+
+.detail-table__row--head > span {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: var(--fg2);
+  padding: 11px 14px;
+}
+
+.detail-table__format {
+  color: var(--fg2);
+}
+
+/* ---- Pipeline ---- */
+
+.detail-pipeline {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.detail-pipeline__stage {
+  border-top: 2px solid var(--accent);
+  padding-top: 14px;
+}
+
+.detail-pipeline__stage-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: var(--accent-ink);
+}
+
+.detail-pipeline__stage-title {
+  font-size: 16px;
+  margin: 8px 0 8px;
+}
+
+.detail-pipeline__stage-description {
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--fg2);
+  margin: 0;
+}
+
+/* ---- Data model ---- */
+
+.detail-model-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.detail-model-card {
+  border: 1px solid var(--line);
+  padding: 16px 18px;
+}
+
+.detail-model-card__head {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: baseline;
+}
+
+.detail-model-card__name {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--accent-ink);
+}
+
+.detail-model-card__type {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  color: var(--fg2);
+}
+
+.detail-model-card__grain {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--fg2);
+  margin: 10px 0 8px;
+}
+
+.detail-model-card__description {
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--fg2);
+  margin: 0;
+}
+
+/* ---- Infrastructure ---- */
+
+.detail-infra-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.detail-infra-item {
+  border-top: 1px solid var(--line);
+  padding-top: 14px;
+}
+
+.detail-infra-item__label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: var(--accent-ink);
+}
+
+.detail-infra-item__description {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--fg2);
+  margin: 10px 0 0;
+}
+
+/* ---- Challenges ---- */
+
+.detail-challenges {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.detail-challenge {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  padding-bottom: 22px;
+  border-bottom: 1px solid var(--line);
+}
+
+.detail-challenges .detail-challenge:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.detail-challenge__label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: var(--fg2);
+}
+
+.detail-challenge__label--solution {
+  color: var(--accent-ink);
+}
+
+.detail-challenge__text {
+  font-size: 15px;
+  line-height: 1.6;
+  margin: 8px 0 0;
+}
+
+.detail-challenge__text--solution {
+  color: var(--fg2);
+}
+
+/* ---- Results ---- */
+
+.detail-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.detail-stat {
+  border: 1px solid var(--line);
+  padding: 22px 20px;
+  background: var(--stat-bg);
+}
+
+.detail-stat__value {
+  display: block;
+  font-size: 40px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: var(--accent-ink);
+}
+
+.detail-stat__label {
+  display: block;
+  font-size: 13.5px;
+  color: var(--fg2);
+  margin-top: 10px;
+}
+
+/* ---- Dashboards gallery ---- */
+
+.detail-gallery {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.detail-gallery__item {
+  margin: 0;
+}
+
+/* ---- Write-up retro ---- */
+
+.detail-retro__title {
+  font-size: 18px;
+  margin: 0 0 10px;
+}
+
+.detail-retro__text {
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--fg2);
+  margin: 0 0 26px;
+  max-width: 68ch;
+}
+
+/* ---- Tags ---- */
+
+.detail-tags {
+  margin-top: 52px;
+  padding-top: 22px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.detail-tags__label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: var(--fg2);
+  margin-right: 6px;
+}
+
+/* ---- Not found ---- */
+
+.detail-not-found {
+  padding: 84px 40px;
+  max-width: 640px;
+}
+
+.detail-not-found h1 {
+  font-size: 32px;
+  margin: 16px 0 12px;
+}
+
+.detail-not-found p {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--fg2);
+  margin: 0 0 24px;
+}
+
+@media (max-width: 860px) {
+  .detail {
+    padding: 40px 20px;
+  }
+
+  .detail-header__title {
+    font-size: 32px;
+  }
+
+  .detail-header__lead {
+    font-size: 17px;
+  }
+
+  .detail-section__grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .detail-section__label,
+  .detail-section__content {
+    grid-column: span 1;
+  }
+
+  .detail-pipeline,
+  .detail-model-grid,
+  .detail-infra-grid,
+  .detail-challenge,
+  .detail-stats,
+  .detail-gallery {
+    grid-template-columns: 1fr;
+  }
+
+  .detail-stat__value {
+    font-size: 30px;
+  }
+
+  .detail-not-found {
+    padding: 40px 20px;
+  }
+}

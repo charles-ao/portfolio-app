@@ -1,11 +1,7 @@
 import { Link } from 'react-router-dom'
-import categories from '../data/categories.json'
+import { categoryName } from '../utils/categories'
 import { simpleIconUrl } from '../utils/icons'
 import './ProjectCard.css'
-
-function categoryName(categoryId) {
-  return categories.categories.find((c) => c.id === categoryId)?.name ?? categoryId
-}
 
 export default function ProjectCard({ project }) {
   return (
@@ -19,7 +15,7 @@ export default function ProjectCard({ project }) {
         <p className="project-card__summary">{project.summary}</p>
         <div className="project-card__tags">
           {project.techStack.slice(0, 4).map((tech) => (
-            <span key={tech.name} className="project-card__tag">
+            <span key={tech.name} className="tag-pill">
               {tech.name.toUpperCase()}
             </span>
           ))}
